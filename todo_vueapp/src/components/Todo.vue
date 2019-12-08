@@ -56,24 +56,41 @@
 </template>
 
 <script>
+import { options } from "../lib/definitions"; //定数optionのインポート
+
 export default {
   name: "#todo",
-  data() {
-    return {
-      addContent: this.$store.state.addContent,
-      todos: this.$store.state.todos,
-      options: this.$store.state.options,
-      current: this.$store.state.current
-    };
-  },
   computed: {
-    //絞り込み機能でフィルタリングされたToDo
-    filteringToDos: function() {
+    //stateの読み取りを行う
+    addContent: {
+      get() {
+        return this.$store.state.addContent;
+      },
+      set(value) {
+        this.$store.state.addContent = value;
+      }
+    },
+    todos() {
+      return this.$store.state.todos;
+    },
+    options() {
+      return options;
+    },
+    current: {
+      get() {
+        return this.$store.state.current;
+      },
+      set(value) {
+        this.$store.state.current = value;
+      }
+    },
+    //ToDoをstatusの値でフィルタリングする処理
+    filteringToDos() {
       return this.todos.filter(function(value) {
         return this.current < 0 ? true : this.current === value.status;
       }, this);
     },
-    //statusを数字から文字列へ変換する処理
+    //statusの値をを数字から文字列へ変換する処理
     //{0: '作業中', 1: '完了' }みたいな形に変換する
     statusLabels() {
       return this.options.reduce(function(a, b) {
@@ -83,8 +100,8 @@ export default {
   },
   methods: {
     //タスクの追加
-    addToDo: function() {
-      var lastId = this.todos.length + 1;
+    addToDo() {
+      const lastId = this.todos.length + 1;
       if (this.addContent) {
         this.todos.push({
           id: lastId,
@@ -95,12 +112,12 @@ export default {
       }
     },
     //クリックしたボタンとリンクしているidを有するtodoを削除する
-    removeToDo: function(todo) {
-      var indexNumber = this.todos.indexOf(todo);
+    removeToDo(todo) {
+      const indexNumber = this.todos.indexOf(todo);
       this.todos.splice(indexNumber, 1);
     },
     //ボタンをクリックするとstatusが０から1に切り替わる
-    changeStatus: function(todo) {
+    changeStatus(todo) {
       todo.status = todo.status ? 0 : 1;
     }
   }
