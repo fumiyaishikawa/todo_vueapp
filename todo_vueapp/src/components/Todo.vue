@@ -52,9 +52,6 @@
           </div>
         </div>
       </div>
-      <p>{{ todos }}</p>
-      <p>{{ fileteringTodos }}</p>
-      <p>{{ currentStatus }}</p>
     </section>
   </div>
 </template>

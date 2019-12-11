@@ -18,13 +18,16 @@ export default new Vuex.Store({
         currentStatus: -1
     },
     getters: {
-        //     //ToDoをstatusの値でフィルタリングして参照する処理
+        //todosのstatusとcurrentStatusが一致するものを参照する
+        //エラー？コンソールにfilteringTodosが記されているが、setterを持っていない的な？
         filteringTodos(state) {
-            return state.todos.filter(function (value) {
-                return state.currentStatus < 0
-                    ? true
-                    : state.currentStatus === value.todos;
-            }, state.todos);
+            if (state.currentStatus == 0) {
+                return state.todos.filter(todos => todos.status === 0);
+            } else if (state.currentStatus == 1) {
+                return state.todos.filter(todos => todos.status === 1);
+            } else {
+                return state.todos;
+            }
         },
     },
     mutations: { //stateを更新する同期的な処理を書く
@@ -57,6 +60,5 @@ export default new Vuex.Store({
         changeCurrentStatus(state, index) {
             state.currentStatus = index;
         }
-
-    },
+    }
 });
