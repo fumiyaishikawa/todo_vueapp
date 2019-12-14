@@ -7,11 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         // タスクを保存する。
-        todos: [
-            { id: 1, content: 'aaa', status: 0 },
-            { id: 2, content: 'bbb', status: 0 },
-            { id: 3, content: 'ccc', status: 0 },
-        ],
+        todos: [],
         // タスクに登録するコンテンツを登録。
         newContent: "",
         //絞り込み機能の初期値。difinition.jsのoptionsと紐付ける。
@@ -50,7 +46,8 @@ export default new Vuex.Store({
         },
         // 削除ボタンと紐づいていたidを有するタスクを削除する処理
         removeTodo(state, index) {
-            state.todos.splice(index, 1);
+            let indexNumber = state.todos.indexOf(index);
+            state.todos.splice(indexNumber, 1);
         },
         //状態ボタンをクリックするとstatusが０から1に切り替わる(同時にラベルも変化する)
         changeStatus(state, index) {

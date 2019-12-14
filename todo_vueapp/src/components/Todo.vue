@@ -8,7 +8,7 @@
             <input
               class="form-check-input ml-3"
               type="radio"
-              v-model="currentStatus"
+              v-model="checked"
               :value="label.value"
               @click="changeCurrentStatus"
             />
@@ -32,11 +32,11 @@
           <td class="text-center">
             <button
               class="btn btn-dark text-white bg-dark"
-              v-on:click="changeStatus(index)"
+              @click="changeStatus(todo.id)"
             >{{ statusLabels[todo.status] }}</button>
           </td>
           <td class="text-center">
-            <button class="btn btn-dark text-white bg-dark" @click="removeTodo(index)">削除</button>
+            <button class="btn btn-dark text-white bg-dark" @click="removeTodo(todo)">削除</button>
           </td>
         </tr>
       </table>
@@ -64,6 +64,11 @@ import { mapMutations } from "vuex";
 
 export default {
   name: "todo",
+  data() {
+    return {
+      checked: this.$store.state.currentStatus
+    };
+  },
   computed: {
     ...mapState(["todos", "newContent", "currentStatus"]),
     ...mapGetters(["filteringTodos"]),
@@ -80,7 +85,13 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["input", "addTodo", "removedoDo", "changeStatus"]),
+    ...mapMutations([
+      "input",
+      "addTodo",
+      "removedoDo",
+      "changeStatus",
+      "changeCurrentStatus"
+    ]),
     // //newContentの更新
     updateContent(e) {
       this.$store.commit("input", e.target.value);
@@ -91,7 +102,7 @@ export default {
     },
     //状態ボタンをクリックするとstatusが０から1に切り替わる(同時にラベルも変化する)
     changeStatus(e) {
-      this.$store.commit("changeStatus", e);
+      this.$store.commit("changeStatus", e - 1);
     },
     changeCurrentStatus(e) {
       this.$store.commit("changeCurrentStatus", e.target.value);
